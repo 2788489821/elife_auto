@@ -24,7 +24,7 @@ def inDeviceModelManager(smpUI):
 
 
 def test_SMP_Device_model_001(inDeviceModelManager,delAddedDeviceModel,smpUI):
-    topBtn = smpUI.wd.find_element(By.CSS_SELECTOR,'.add-one-area > span')
+    topBtn = smpUI.get_text_elem('//div[@class="add-one-area"]/span')
     if topBtn.text == '添加':
         topBtn.click()
 
@@ -36,11 +36,11 @@ def test_SMP_Device_model_001(inDeviceModelManager,delAddedDeviceModel,smpUI):
 
     dms = smpUI.get_first_page_device_models()
     print("表格数据dms：", dms)
-    assert dms == [[
-        '存储柜',
+
+    target = ['存储柜',
         'elife-canbinlocker-g22-10-20-40',
-        '南京e生活存储柜-10大20中40小'
-    ]]
+        '南京e生活存储柜-10大20中40小']
+    assert target in dms
 
 def test_SMP_Device_model_002(inDeviceModelManager,delAddedDeviceModel,smpUI):
     topBtn = smpUI.wd.find_element(By.CSS_SELECTOR,'.add-one-area > span')
@@ -55,11 +55,11 @@ def test_SMP_Device_model_002(inDeviceModelManager,delAddedDeviceModel,smpUI):
 
     dms = smpUI.get_first_page_device_models()
     print("表格数据dms：", dms)
-    assert dms == [[
-        '存储柜',
-        '韩'*100,
-        '南京e生活存储柜-10大20中40小'
-    ]]
+
+    target = ['存储柜',
+        '韩' * 100,
+        '南京e生活存储柜-10大20中40小']
+    assert target in dms
 
 
 

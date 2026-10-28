@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import Select
 @pytest.fixture()
 def delAddedServiceModel(smpUI):
     print('** 删除添加的业务规则 setup **')
+
     yield
 
     print('** 删除添加的业务规则 teardown **')
