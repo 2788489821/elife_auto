@@ -1,21 +1,14 @@
 from selenium.webdriver.common.by import By
-import time,pytest
+import pytest
+from pages.login_page import LoginPage
 
-def test_SMP_login_001(smpUI):
-    smpUI.login('byhy','sdfsdf')
+def test_SMP_login_001(driver):
+    page = LoginPage(driver)
+    page.login('byhy','sdfsdf')
 
-    time.sleep(1)
-    nav = smpUI.wd.find_elements(By.TAG_NAME,'nav')
+    nav = driver.find_elements(By.TAG_NAME,'nav')
 
     assert nav !=[]
-
-@pytest.fixture
-def clearAlert(smpUI):
-    yield
-    try:
-        smpUI.wd.switch_to.alert.accept()
-    except Exception as e:
-        print(e)
 
 @pytest.mark.parametrize('username,password,expectedalert',[
     (None,'sdfsdf','请输入用户名'),
@@ -25,10 +18,10 @@ def clearAlert(smpUI):
     ('byhyy','sdfsdf','登录失败： 用户名不存在'),
     ('byh','sdfsdf','登录失败： 用户名不存在'),
 ])
-def test_SMP_login_002(username,password,expectedalert,clearAlert,smpUI):
-    smpUI.login(username, password)
+def test_SMP_login_002(username,password,expectedalert,clearAlert,driver):
+    page = LoginPage(driver)
+    page.login(username, password)
 
-    time.sleep(1)
 
-    alert = smpUI.wd.switch_to.alert
+    alert = page.get_alert()
     assert alert.text == expectedalert

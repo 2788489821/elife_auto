@@ -1,4 +1,20 @@
+# 虚拟环境
+.venv/
+venv/
+
+# 编译缓存
 __pycache__/
 *.pyc
-.idea/
+*.pyo
+*.pyd
+
+# pytest缓存
 .pytest_cache/
+
+# PyCharm配置
+.idea/
+*.iml
+
+# 日志、截图
+logs/
+screenshots/
