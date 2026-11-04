@@ -21,10 +21,8 @@ def manager_page(driver, request):
     driver.get(url)
 
     yield page_cls(driver)
-
-    page = page_cls(driver)
-    page.del_first_item()
-    # page.close_add_form()
+    # page = page_cls
+    # 这里可以放整个用例文件执行完之后的后续收尾操作,现在的需求的后续操作都是每个用例结束后都要做的操作，所以这里先不写。
 
 @pytest.fixture
 def clearAlert(driver):
@@ -42,10 +40,10 @@ def clean_one_record(manager_page):
 
     manager_page.del_first_item()
 
-# @pytest.fixture()
-# def close_add_form(manager_page):
-#     yield
-#     try:
-#         manager_page.close_add_form()
-#     except Exception:
-#         pass
+@pytest.fixture()
+def close_add_form(manager_page):
+    yield
+    try:
+        manager_page.close_add_form()
+    except Exception:
+        pass

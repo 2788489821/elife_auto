@@ -5,7 +5,7 @@ from cfg import SMP_URL_Device_Model
 
 @pytest.mark.parametrize('manager_page',
       [(DeviceModelPage, SMP_URL_Device_Model)], indirect=True)
-def test_add_device_model_001(manager_page, clean_one_record):
+def test_add_device_model_001(manager_page, clean_one_record, close_add_form):
     page = manager_page
     page.add_device_model('存储柜',
         'elife-canbinlocker-g22-10-20-40',
@@ -20,7 +20,7 @@ def test_add_device_model_001(manager_page, clean_one_record):
 
 @pytest.mark.parametrize('manager_page',
       [(DeviceModelPage, SMP_URL_Device_Model)], indirect=True)
-def test_add_device_model_002(manager_page, clean_one_record):
+def test_add_device_model_002(manager_page, clean_one_record, close_add_form):
     page = manager_page
     page.add_device_model('存储柜',
         '韩' * 100,

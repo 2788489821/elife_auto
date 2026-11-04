@@ -6,9 +6,7 @@ def test_SMP_login_001(driver):
     page = LoginPage(driver)
     page.login('byhy','sdfsdf')
 
-    nav = driver.find_elements(By.TAG_NAME,'nav')
-
-    assert nav !=[]
+    page.is_login_success()
 
 @pytest.mark.parametrize('username,password,expectedalert',[
     (None,'sdfsdf','请输入用户名'),
@@ -18,10 +16,8 @@ def test_SMP_login_001(driver):
     ('byhyy','sdfsdf','登录失败： 用户名不存在'),
     ('byh','sdfsdf','登录失败： 用户名不存在'),
 ])
-def test_SMP_login_002(username,password,expectedalert,clearAlert,driver):
+def test_SMP_login_002(username, password, expectedalert, clearAlert, driver):
     page = LoginPage(driver)
     page.login(username, password)
 
-
-    alert = page.get_alert()
-    assert alert.text == expectedalert
+    assert page.get_alert_text() == expectedalert

@@ -28,6 +28,6 @@ class BasePage:
         self.wait.until(EC.alert_is_present())
         return self.wd.switch_to.alert
 
-    # def close_add_form(self):
-    #     ele = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="取消"]')))
-    #     ele.click()
+    def close_add_form(self):
+        ele = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="取消"]')))
+        ele.click()

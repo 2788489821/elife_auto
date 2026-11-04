@@ -35,4 +35,4 @@ class DeviceModelPage(BasePage):
         self.input_text('//input[@id="device-model"]', name)
         self.input_text('//input[@id="device-model-desc"]', desc)
         self.click_elem('//div[@class="add-one-submit-btn-div"]/span')
-        self.click_elem('//span[text()="取消"]')
+        # self.click_elem('//span[text()="取消"]')

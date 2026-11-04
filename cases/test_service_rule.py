@@ -4,7 +4,7 @@ from cfg import SMP_URL_Service_Rule
 
 @pytest.mark.parametrize('manager_page',
       [(ServiceRulePage, SMP_URL_Service_Rule)], indirect=True)
-def test_SMP_Service_Rule_001(manager_page):
+def test_SMP_Service_Rule_001(manager_page, clean_one_record, close_add_form):
     page = manager_page
     page.add_service_rule(
         '规则1','预付费-下发业务量','50','100','度','1.5','电费'

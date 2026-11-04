@@ -1,6 +1,6 @@
-from cfg import *
 from lib.base_page import BasePage
-
+from cfg import *
+from selenium.webdriver.common.by import By
 
 class LoginPage(BasePage):
     def login(self, username, password):
@@ -11,3 +11,10 @@ class LoginPage(BasePage):
         if password is not None:
             self.input_text('//input[@id="password"]', password)
         self.click_elem('//button[@id="loginBtn"]')
+
+    def is_login_success(self):
+        nav = self.wd.find_elements(By.TAG_NAME, 'nav')
+        return nav
+
+    def get_alert_text(self):
+        return self.get_alert().text
