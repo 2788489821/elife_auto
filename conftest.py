@@ -1,9 +1,8 @@
+import time
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from cfg import *
-from pages.device_model_page import DeviceModelPage
-from pages.service_rule_page import ServiceRulePage
+from pages.login_page import LoginPage
 
 @pytest.fixture(scope="module")
 def driver():
@@ -15,53 +14,17 @@ def driver():
 
     wd.quit()
 
-@pytest.fixture()
-def delAddedDeviceModel(driver):
-    print('** 删除添加的设备型号 setup **')
+@pytest.fixture(scope="module")
+def manager_page(driver, request):
+    page_cls, url = request.param
+    LoginPage(driver).login('byhy', 'sdfsdf')
+    driver.get(url)
 
-    yield
+    yield page_cls(driver)
 
-    print('** 删除添加的设备型号 teardown **')
-
-    page = DeviceModelPage(driver)
+    page = page_cls(driver)
     page.del_first_item()
-    page.close_add_form()
-
-@pytest.fixture(scope='module')
-def inDeviceModelManager(driver):
-    print('** inDeviceModelManager setup **')
-    from pages.login_page import LoginPage
-    page = LoginPage(driver)
-    page.login('byhy', 'sdfsdf')
-    page.wd.get(SMP_URL_Device_Model)
-
-    yield
-
-    print('** inDeviceModelManager **')
-
-@pytest.fixture()
-def delAddedServiceModel(driver):
-    print('** 删除添加的业务规则 setup **')
-
-    yield
-
-    print('** 删除添加的业务规则 teardown **')
-
-    page = ServiceRulePage(driver)
-    page.del_first_item()
-    page.close_add_form()
-
-@pytest.fixture(scope='module')
-def inServiceRuleManager(driver):
-    print('** inServiceRuleManager setup **')
-    from pages.login_page import LoginPage
-    page = LoginPage(driver)
-    page.login('byhy', 'sdfsdf')
-    page.wd.get(SMP_URL_Service_Rule)
-
-    yield
-
-    print('** inServiceRuleManager **')
+    # page.close_add_form()
 
 @pytest.fixture
 def clearAlert(driver):
@@ -72,3 +35,17 @@ def clearAlert(driver):
         driver.switch_to.alert.accept()
     except Exception as e:
         print(e)
+
+@pytest.fixture()
+def clean_one_record(manager_page):
+    yield
+
+    manager_page.del_first_item()
+
+# @pytest.fixture()
+# def close_add_form(manager_page):
+#     yield
+#     try:
+#         manager_page.close_add_form()
+#     except Exception:
+#         pass

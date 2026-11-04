@@ -16,11 +16,13 @@ class DeviceModelPage(BasePage):
         return deviceModels
 
     def del_first_item(self) -> bool:
-        self.click_elem('(//div[contains(@class,"result-list-item")])[1]//*[@class="btn-no-border"]')
-
-        alert = self.wait.until(EC.alert_is_present())
-        alert.accept()
-        return True
+        try:
+            self.click_elem('(//div[contains(@class,"result-list-item")])[1]//*[@class="btn-no-border"]')
+            alert = self.wait.until(EC.alert_is_present())
+            alert.accept()
+            return True
+        except Exception:
+            return False
 
     def add_device_model(self, devtype, name, desc):
         self.click_elem('//span[text()="添加"]')
@@ -33,4 +35,4 @@ class DeviceModelPage(BasePage):
         self.input_text('//input[@id="device-model"]', name)
         self.input_text('//input[@id="device-model-desc"]', desc)
         self.click_elem('//div[@class="add-one-submit-btn-div"]/span')
-
+        self.click_elem('//span[text()="取消"]')

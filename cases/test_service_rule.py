@@ -1,8 +1,11 @@
+import pytest
 from pages.service_rule_page import ServiceRulePage
+from cfg import SMP_URL_Service_Rule
 
-
-def test_SMP_Service_Rule_001(inServiceRuleManager, delAddedServiceModel, driver):
-    page = ServiceRulePage(driver)
+@pytest.mark.parametrize('manager_page',
+      [(ServiceRulePage, SMP_URL_Service_Rule)], indirect=True)
+def test_SMP_Service_Rule_001(manager_page):
+    page = manager_page
     page.add_service_rule(
         '规则1','预付费-下发业务量','50','100','度','1.5','电费'
     )
