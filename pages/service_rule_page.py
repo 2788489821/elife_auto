@@ -2,24 +2,30 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from lib.base_page import BasePage
+from selenium.common import TimeoutException
 
 class ServiceRulePage(BasePage):
     def get_first_page_service_rules(self):
-        values = self.get_text_elems('//*[@class="field-value"]')
-        serviceRules = []
-        for idx, value in enumerate(values):
-            if (idx + 1) % 4 == 0:
-                serviceRules.append(
-                    [values[idx - 3].text, values[idx - 2].text, values[idx - 1].text, values[idx].text]
-                )
-        return serviceRules
+        try:
+            values = self.get_text_elems('//*[@class="field-value"]')
+            serviceRules = []
+            for idx, value in enumerate(values):
+                if (idx + 1) % 4 == 0:
+                    serviceRules.append(
+                        [values[idx - 3].text, values[idx - 2].text, values[idx - 1].text, values[idx].text]
+                    )
+            return serviceRules
+        except TimeoutException:
+            return False
 
     def del_first_item(self) -> bool:
-        self.click_elem('(//div[contains(@class,"result-list-item")])[1]//*[@class="btn-no-border"]')
-
-        alert = self.wait.until(EC.alert_is_present())
-        alert.accept()
-        return True
+        try:
+            self.click_elem('(//div[contains(@class,"result-list-item")])[1]//*[@class="btn-no-border"]')
+            alert = self.wait.until(EC.alert_is_present())
+            alert.accept()
+            return True
+        except TimeoutException:
+            return False
 
     def add_service_rule(self, name, rule_type, min_consume, estimate_consume, billing_unit, price_per, rule_desc, fee_list=None):
         self.click_elem('//span[text()="添加"]')

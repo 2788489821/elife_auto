@@ -2,18 +2,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from lib.base_page import BasePage
-
+from selenium.common import TimeoutException
 
 class DeviceModelPage(BasePage):
     def get_first_page_device_models(self):
-        values = self.get_text_elems('//*[@class="field-value"]')
-        deviceModels = []
-        for idx, value in enumerate(values):
-            if (idx + 1) % 3 == 0:
-                deviceModels.append(
-                    [values[idx - 2].text, values[idx - 1].text, values[idx].text]
-                )
-        return deviceModels
+        try:
+            values = self.get_text_elems('//*[@class="field-value"]')
+            deviceModels = []
+            for idx, value in enumerate(values):
+                if (idx + 1) % 3 == 0:
+                    deviceModels.append(
+                        [values[idx - 2].text, values[idx - 1].text, values[idx].text]
+                    )
+            return deviceModels
+        except TimeoutException:
+            return False
 
     def del_first_item(self) -> bool:
         try:
@@ -21,7 +24,7 @@ class DeviceModelPage(BasePage):
             alert = self.wait.until(EC.alert_is_present())
             alert.accept()
             return True
-        except Exception:
+        except TimeoutException:
             return False
 
     def add_device_model(self, devtype, name, desc):
@@ -35,4 +38,3 @@ class DeviceModelPage(BasePage):
         self.input_text('//input[@id="device-model"]', name)
         self.input_text('//input[@id="device-model-desc"]', desc)
         self.click_elem('//div[@class="add-one-submit-btn-div"]/span')
-        # self.click_elem('//span[text()="取消"]')
