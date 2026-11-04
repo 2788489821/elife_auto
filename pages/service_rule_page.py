@@ -29,6 +29,8 @@ class ServiceRulePage(BasePage):
 
     def add_service_rule(self, name, rule_type, min_consume, estimate_consume, billing_unit, price_per, rule_desc, fee_list=None):
         self.click_elem('//span[text()="添加"]')
+        self.wait.until(EC.visibility_of_element_located((By.XPATH, '//div[contains(@class,"add-one-form")]')))
+
         if fee_list is None:
             fee_list = []
         # 规则名称
@@ -51,6 +53,8 @@ class ServiceRulePage(BasePage):
             self.input_text('//span[text()="单位价格"]/following-sibling::input', price_per)
 
         if rule_type == '后付费-上报业务量':
+            if not fee_list:
+                raise ValueError("后付费-上报业务量传入至少一条费率 fee_list")
             first_fee = fee_list[0]
             # 业务码
             self.input_text('//span[text()="业务码"]/following-sibling::input', first_fee[0])
@@ -59,12 +63,15 @@ class ServiceRulePage(BasePage):
             # 单价
             self.input_text('//span[text()="单位价格"]/following-sibling::input', first_fee[2])
             for one_fee in fee_list[1:]:
-                self.click_elem('//span[text()="添加费率"]/following-sibling::input')
+                self.click_elem('(//div[contains(@class,"fee-rate")]//button[text()="添加费率"])[last()]')
 
-                entry = self.get_text_elem('(//div[@class="fee-rate"])[last()]')
-                entry.find_element(By.XPATH,'.//input[1]').send_keys(one_fee[0])
-                entry.find_element(By.XPATH,'.//input[2]').send_keys(one_fee[1])
-                entry.find_element(By.XPATH,'.//input[3]').send_keys(one_fee[2])
+                self.wait.until(EC.visibility_of_element_located(
+                    (By.XPATH, '(//div[contains(@class,"fee-rate")])[last()]')))
+
+                row = '(//div[contains(@class,"fee-rate")])[last()]'
+                self.input_text(f'{row}//input[1]', one_fee[0])
+                self.input_text(f'{row}//input[2]', one_fee[1])
+                self.input_text(f'{row}//input[3]', one_fee[2])
         # 规则描述
         self.input_text('//span[text()="规则描述"]/following-sibling::input', rule_desc)
         # 点击确定按钮
