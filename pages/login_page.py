@@ -13,8 +13,7 @@ class LoginPage(BasePage):
         self.click_elem('//button[@id="loginBtn"]')
 
     def is_login_success(self):
-        nav = self.wd.find_elements(By.TAG_NAME, 'nav')
-        return nav
+        return len(self.wd.find_elements(By.TAG_NAME, 'nav')) > 0
 
     def get_alert_text(self):
         return self.get_alert().text

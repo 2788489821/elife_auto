@@ -1,4 +1,3 @@
-from selenium.webdriver.common.by import By
 import pytest
 from pages.login_page import LoginPage
 
@@ -6,7 +5,7 @@ def test_SMP_login_001(driver):
     page = LoginPage(driver)
     page.login('byhy','sdfsdf')
 
-    page.is_login_success()
+    assert page.is_login_success()
 
 @pytest.mark.parametrize('username,password,expectedalert',[
     (None,'sdfsdf','请输入用户名'),

@@ -8,15 +8,17 @@ class ServiceRulePage(BasePage):
     def get_first_page_service_rules(self):
         try:
             values = self.get_text_elems('//*[@class="field-value"]')
-            serviceRules = []
-            for idx, value in enumerate(values):
-                if (idx + 1) % 4 == 0:
-                    serviceRules.append(
-                        [values[idx - 3].text, values[idx - 2].text, values[idx - 1].text, values[idx].text]
-                    )
-            return serviceRules
         except TimeoutException:
-            return False
+            return []
+
+        serviceRules = []
+        for idx, value in enumerate(values):
+            if (idx + 1) % 4 == 0:
+                serviceRules.append(
+                    [values[idx - 3].text, values[idx - 2].text, values[idx - 1].text, values[idx].text]
+                )
+        return serviceRules
+
 
     def del_first_item(self) -> bool:
         try:

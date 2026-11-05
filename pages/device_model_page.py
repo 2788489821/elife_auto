@@ -8,15 +8,17 @@ class DeviceModelPage(BasePage):
     def get_first_page_device_models(self):
         try:
             values = self.get_text_elems('//*[@class="field-value"]')
-            deviceModels = []
-            for idx, value in enumerate(values):
-                if (idx + 1) % 3 == 0:
-                    deviceModels.append(
-                        [values[idx - 2].text, values[idx - 1].text, values[idx].text]
-                    )
-            return deviceModels
         except TimeoutException:
-            return False
+            return []
+
+        deviceModels = []
+        for idx, value in enumerate(values):
+            if (idx + 1) % 3 == 0:
+                deviceModels.append(
+                    [values[idx - 2].text, values[idx - 1].text, values[idx].text]
+                )
+        return deviceModels
+
 
     def del_first_item(self) -> bool:
         try:
